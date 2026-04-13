@@ -1,11 +1,13 @@
 package org.example.service;
 
 import org.example.model.*;
-import org.example.model.requests.LoginRequest;
+import org.example.model.request.LoginRequest;
 import org.example.repository.CommitteeRepo;
 import org.example.repository.UserRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
 public class UserService {
@@ -40,4 +42,6 @@ public class UserService {
         User user = createUser(name,email,password,role,category,number);
         userRepository.save(user);
     }
+
+    public List<User> getUsers(){return userRepository.findAll();}
 }
