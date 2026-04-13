@@ -1,32 +1,25 @@
 package org.example;
 
-import java.sql.*;
+import org.example.model.Category;
+import org.example.model.Role;
+import org.example.service.UserService;
+import org.springframework.boot.ApplicationRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+@SpringBootApplication
 public class Main {
-    private static Connection connection;
-    public static void main(String[] args) throws SQLException {
-        try {
-            openDatabaseConnection();
-        } finally {
-            closeDatabaseConnection();
-        }
+
+    public static void main(String[] args) {
+        SpringApplication.run(Main.class, args);
     }
 
-    private static void openDatabaseConnection() throws SQLException {
-        System.out.println("Connecting to the database...");
-        connection = DriverManager.getConnection(
-                "jdbc:mariadb://localhost:3306/jdbc_demo",
-                "bilal", "password"
-        );
-
-        System.out.println("Connection valid: " + connection.isValid(5));
-    }
-
-    private static void closeDatabaseConnection() throws SQLException {
-        System.out.println("Closing the database connection...");
-        connection.close();
-        System.out.println("Connection valid: " + connection.isValid(5));
+    // This runs once on startup — good for quick tests
+    @Bean
+    public ApplicationRunner run(UserService userService) {
+        return args -> {
+            // userService.createAndSaveUser("Jean", "jean@gmail.com","mdpsolide", Role.LIS, Category.BDS, 1);
+        };
     }
 }
