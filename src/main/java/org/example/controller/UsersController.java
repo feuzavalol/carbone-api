@@ -18,5 +18,5 @@ public class UsersController {
         this.service = service;
     }
     @GetMapping("/users")
-    public List<User> findAllEvents() {return service.getUsers();}
+    public List<User.UserDTO> findAllEvents() {return service.toDTO(service.getUsers());}
 }
