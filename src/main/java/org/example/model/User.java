@@ -17,8 +17,6 @@ public class User {
 
     @Getter
     private String name;
-
-    @Getter
     private String email;
     @Column(name="password", nullable = false)
     private String passwordHash;
@@ -26,6 +24,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Role role;
     private UUID committee_id;
+    @Getter
     private boolean active;
     private Date created_at;
     private Date updated_at;
@@ -43,7 +42,7 @@ public class User {
         this.updated_at = created_at;
     }
 
-    public UUID getCommitteeId() {return committee_id;}
+    public record UserDTO(String username, Role role, boolean active){}
 
     public String getPassword() {return passwordHash;}
 }
