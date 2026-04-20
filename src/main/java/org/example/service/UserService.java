@@ -1,12 +1,13 @@
 package org.example.service;
 
 import org.example.model.*;
-import org.example.model.request.LoginRequest;
+import org.example.model.requests.LoginRequest;
 import org.example.repository.CommitteeRepo;
 import org.example.repository.UserRepo;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -21,6 +22,16 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public User.UserDTO toDTO(User user) {
+        return new User.UserDTO(user.getName(), user.getRole(), user.isActive());
+    }
+
+    public List<User.UserDTO> toDTO(List<User> users){
+        List<User.UserDTO> usersDTO = new ArrayList<>();
+        users.forEach((user) -> usersDTO.add(toDTO(user)));
+        return usersDTO;
+    }
+
     public User createUser(String name, String email, String password, Role role, Category category, int number) {
         Committee committee = committeeRepository
                 .findByCategoryAndNumber(category, number)
@@ -31,8 +42,8 @@ public class UserService {
 
     public User createUser(LoginRequest request) {
         Committee committee = committeeRepository
-                .findByCategoryAndNumber(request.getCommittee_category(), request.getCommittee_number())
-                .orElseThrow(() -> new RuntimeException("Committee not found: " + request.getCommittee_category() + " - " + request.getCommittee_number()));
+                .findByCategoryAndNumber(request.getCommitteeCategory(), request.getCommitteeNumber())
+                .orElseThrow(() -> new RuntimeException("Committee not found: " + request.getCommitteeCategory() + " - " + request.getCommitteeNumber()));
 
         return new User(request.getUsername(), request.getEmail(), request.getPassword(), Role.VIS, committee.getId());
     }
