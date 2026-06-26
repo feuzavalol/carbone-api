@@ -34,7 +34,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
         User user = userRepository
                         .findByName(request.getUsername())
-                        .orElseThrow(() -> new RuntimeException("User not found: " + request.getUsername()));;
+                        .orElseThrow(() -> new RuntimeException("User not found: " + request.getUsername()));
         if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
