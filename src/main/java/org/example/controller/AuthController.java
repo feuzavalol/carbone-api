@@ -32,8 +32,10 @@ public class AuthController {
 
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequest request) {
-        User user = userRepository.findByName(request.getUsername());
-        if (user == null || !passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+        User user = userRepository
+                        .findByName(request.getUsername())
+                        .orElseThrow(() -> new RuntimeException("User not found: " + request.getUsername()));;
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
             return ResponseEntity
                     .status(HttpStatus.UNAUTHORIZED)
                     .body(Map.of("error", "Identifiants invalides"));
