@@ -1,4 +1,3 @@
 package org.example.model.responses;
 
-public record CarbonResponse() {
-}
+public record CarbonResponse(double carbon_value) {}
