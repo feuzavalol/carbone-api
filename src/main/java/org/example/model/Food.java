@@ -27,5 +27,5 @@ public class Food {
     @Getter
     private String sub_food_group;
     @Getter
-    private UUID source;
+    private String source;
 }
