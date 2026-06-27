@@ -1,9 +1,7 @@
 package org.example.controller;
 
-import org.example.model.Food;
 import org.example.model.Transport;
 import org.example.model.responses.CarbonResponse;
-import org.example.service.FoodService;
 import org.example.service.TransportService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

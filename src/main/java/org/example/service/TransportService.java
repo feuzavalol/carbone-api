@@ -1,14 +1,11 @@
 package org.example.service;
 
 import org.example.model.*;
-import org.example.model.requests.CarbonRequest;
 import org.example.model.responses.CarbonResponse;
 import org.example.repository.*;
-        import org.springframework.http.ResponseEntity;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
