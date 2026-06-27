@@ -9,7 +9,6 @@ import java.util.UUID;
 
 public interface CommitteeRepo extends JpaRepository<Committee, UUID> {
     Optional<Committee> findByCategoryAndNumber(Category category, int number);
-    Optional<Committee> findCommitteeByCategory(Category category);
 
     Optional<Committee> findByYear(int year);
     Optional<Committee> findByNumber(int number);
