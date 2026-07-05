@@ -10,4 +10,5 @@ import java.util.UUID;
 public interface TransportRepo extends JpaRepository<Transport, UUID> {
     @Nonnull
     Optional<Transport> findById(@Nonnull UUID uuid);
+    Optional<Transport> findByName(String name);
 }

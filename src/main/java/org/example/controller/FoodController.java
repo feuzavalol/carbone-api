@@ -34,7 +34,7 @@ public class FoodController {
         return ResponseEntity.ok(response);
     }
 
-    @GetMapping("/testFood")
+    @GetMapping("/liste/alimentation")
     public ResponseEntity<List<FoodRowDTO>> retrieveFood(
             @RequestParam UUID committeeId
     ){

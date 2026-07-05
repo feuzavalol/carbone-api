@@ -1,9 +1,7 @@
 package org.example.model.item;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.UUID;
 
@@ -12,8 +10,19 @@ public class TransportItem {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-    private UUID author_id;
+    @Column(name="author_id", nullable = false)
+    private UUID authorId;
     private String category;
-    private UUID object_id;
-    private double value;
+    @Getter
+    @Column(name="object_id", nullable = false)
+    private UUID objectId;
+    @Getter
+    private double distance;
+
+    public TransportItem(UUID authorId, String category, UUID transportId, double distance) {
+        this.authorId = authorId;
+        this.category = category;
+        this.objectId = transportId;
+        this.distance = distance;
+    }
 }

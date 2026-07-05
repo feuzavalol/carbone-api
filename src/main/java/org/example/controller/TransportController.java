@@ -2,7 +2,9 @@ package org.example.controller;
 
 import org.example.model.Transport;
 import org.example.model.responses.CarbonResponse;
+import org.example.model.responses.TransportRowDTO;
 import org.example.service.TransportService;
+import org.example.service.item.TransportItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,9 +18,11 @@ import java.util.UUID;
 @RestController
 public class TransportController {
     private final TransportService service;
+    private final TransportItemService transportItemService;
 
-    public TransportController(TransportService service) {
+    public TransportController(TransportService service, TransportItemService transportItemService) {
         this.service = service;
+        this.transportItemService = transportItemService;
     }
 
     @GetMapping("/transport")
@@ -30,5 +34,12 @@ public class TransportController {
             @RequestParam double distance
     ){
         return service.getCarbonValue(transportId,distance);
+    }
+
+    @GetMapping("/liste/transport")
+    public ResponseEntity<List<TransportRowDTO>> retrieveFood(
+            @RequestParam UUID committeeId
+    ){
+        return ResponseEntity.ok(transportItemService.getTransportItemList(committeeId));
     }
 }
