@@ -54,11 +54,15 @@ public class JwtService {
     public Map<String, String> register(LoginRequest request) {
         Category category = request.getCommitteeCategory();
         int number = request.getCommitteeNumber();
+        int year = request.getYear();
         Committee committee = committeeRepo
-                .findByCategoryAndNumber(category, number)
+                .findByCategoryAndNumberAndYear(category, number, year)
                 .orElseThrow(() -> new RuntimeException("Committee not found: " + category + " - " + number));
+        System.out.println(committee);
+
         // Créer le nouvel utilisateur
         User user = new User(request.getUsername(), request.getEmail(), passwordEncoder.encode(request.getPassword()), request.getRole(), committee.getId());
+        System.out.println(user);
 
         User savedUser = userRepo.save(user);
 

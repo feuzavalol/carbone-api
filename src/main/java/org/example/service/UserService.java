@@ -32,9 +32,9 @@ public class UserService {
         return usersDTO;
     }
 
-    public User createUser(String name, String email, String password, Role role, Category category, int number) {
+    public User createUser(String name, String email, String password, Role role, Category category, int number, int year) {
         Committee committee = committeeRepository
-                .findByCategoryAndNumber(category, number)
+                .findByCategoryAndNumberAndYear(category, number, year)
                 .orElseThrow(() -> new RuntimeException("Committee not found: " + category + " - " + number));
 
         return new User(name, email, password, role, committee.getId());
@@ -42,15 +42,15 @@ public class UserService {
 
     public User createUser(LoginRequest request) {
         Committee committee = committeeRepository
-                .findByCategoryAndNumber(request.getCommitteeCategory(), request.getCommitteeNumber())
+                .findByCategoryAndNumberAndYear(request.getCommitteeCategory(), request.getCommitteeNumber(),request.getYear())
                 .orElseThrow(() -> new RuntimeException("Committee not found: " + request.getCommitteeCategory() + " - " + request.getCommitteeNumber()));
 
         return new User(request.getUsername(), request.getEmail(), request.getPassword(), Role.VIS, committee.getId());
     }
 
     @Transactional
-    public void createAndSaveUser(String name, String email, String password, Role role, Category category, int number) {
-        User user = createUser(name,email,password,role,category,number);
+    public void createAndSaveUser(String name, String email, String password, Role role, Category category, int number, int year) {
+        User user = createUser(name,email,password,role,category,number,year);
         userRepository.save(user);
     }
 

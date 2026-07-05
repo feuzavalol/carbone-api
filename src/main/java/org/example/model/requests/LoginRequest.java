@@ -16,4 +16,5 @@ public class LoginRequest {
     @Enumerated(EnumType.STRING)
     private Category committeeCategory;
     private int committeeNumber;
+    private int year;
 }
