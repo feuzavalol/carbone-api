@@ -1,6 +1,7 @@
 package org.example.model.item;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 
 import java.util.UUID;
 
@@ -12,14 +13,16 @@ public class FoodItem {
     @Column(name="author_id", nullable = false)
     private UUID authorId;
     private String category;
+    @Getter
     @Column(name="object_id", nullable = false)
     private UUID objectId;
-    private double value;
+    @Getter
+    private double quantity;
 
-    public FoodItem (UUID author_id, String category, UUID object_id, double value){
-        this.authorId = author_id;
+    public FoodItem(UUID authorId, String category, UUID foodId, double quantity) {
+        this.authorId = authorId;
         this.category = category;
-        this.objectId = object_id;
-        this.value = value;
+        this.objectId = foodId;
+        this.quantity = quantity;
     }
 }

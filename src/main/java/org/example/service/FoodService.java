@@ -15,17 +15,20 @@ import java.util.UUID;
 public class FoodService {
 
     private final FoodRepo foodRepo;
+    private final CarbonService carbonService;
 
-    public FoodService(FoodRepo foodRepo) {
+    public FoodService(FoodRepo foodRepo, CarbonService carbonService) {
+
         this.foodRepo = foodRepo;
+        this.carbonService = carbonService;
     }
 
     public List<Food> getFoodList() {return foodRepo.findAll();}
     
-    public ResponseEntity<CarbonResponse> getCarbonValue(UUID foodId, double quantity) {
+    public CarbonResponse getCarbonValue(UUID foodId, double quantity) {
         Food food = foodRepo.findById(foodId)
                 .orElseThrow(() -> new RuntimeException("There is no food matching this uuid: "+foodId));
 
-        return ResponseEntity.ok(new CarbonResponse(food.getCost_per_unit()*quantity));
+        return new CarbonResponse(carbonService.getCarbonValue(food,quantity));
     }
 }
