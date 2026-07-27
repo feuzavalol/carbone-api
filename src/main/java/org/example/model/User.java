@@ -14,7 +14,6 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
-
     @Getter
     private String name;
     private String email;
@@ -23,6 +22,7 @@ public class User {
     @Getter
     @Enumerated(EnumType.STRING)
     private Role role;
+    @Getter
     private UUID committee_id;
     @Getter
     private boolean active;

@@ -2,9 +2,7 @@ package org.example.controller;
 
 import org.example.model.Food;
 import org.example.model.responses.CarbonResponse;
-import org.example.model.responses.FoodRowDTO;
 import org.example.service.FoodService;
-import org.example.service.item.FoodItemService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +13,14 @@ import java.util.UUID;
 @RestController
 public class FoodController {
     private final FoodService service;
-    private final FoodItemService foodItemService;
 
-    public FoodController(FoodService service, FoodItemService foodItemService) {
+    public FoodController(FoodService service) {
         this.service = service;
-        this.foodItemService = foodItemService;
+    }
+
+    @GetMapping("/singleFood")
+    public Food findFood(@RequestParam UUID foodId){
+        return service.getFood(foodId);
     }
 
     @GetMapping("/food")
@@ -32,12 +33,5 @@ public class FoodController {
     ){
         CarbonResponse response = service.getCarbonValue(foodId,quantity);
         return ResponseEntity.ok(response);
-    }
-
-    @GetMapping("/testFood")
-    public ResponseEntity<List<FoodRowDTO>> retrieveFood(
-            @RequestParam UUID committeeId
-    ){
-        return ResponseEntity.ok(foodItemService.getFoodItemList(committeeId));
     }
 }

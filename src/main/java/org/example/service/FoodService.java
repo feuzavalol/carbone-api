@@ -1,14 +1,11 @@
 package org.example.service;
 
 import org.example.model.*;
-import org.example.model.requests.CarbonRequest;
 import org.example.model.responses.CarbonResponse;
 import org.example.repository.*;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -23,11 +20,19 @@ public class FoodService {
         this.carbonService = carbonService;
     }
 
+    public boolean existsById(UUID id){
+        return foodRepo.existsById(id);
+    }
+
     public List<Food> getFoodList() {return foodRepo.findAll();}
-    
-    public CarbonResponse getCarbonValue(UUID foodId, double quantity) {
-        Food food = foodRepo.findById(foodId)
+
+    public Food getFood(UUID foodId) {
+        return foodRepo.findById(foodId)
                 .orElseThrow(() -> new RuntimeException("There is no food matching this uuid: "+foodId));
+    }
+
+    public CarbonResponse getCarbonValue(UUID foodId, double quantity) {
+        Food food = getFood(foodId);
 
         return new CarbonResponse(carbonService.getCarbonValue(food,quantity));
     }
