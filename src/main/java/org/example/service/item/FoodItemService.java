@@ -1,15 +1,19 @@
 package org.example.service.item;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.example.model.*;
 import org.example.model.item.FoodItem;
-import org.example.model.requests.FoodRequest;
+import org.example.model.item.FoodItemDTO;
+import org.example.model.requests.FoodItemRequest;
 import org.example.model.responses.FoodRowDTO;
 import org.example.repository.*;
 import org.example.repository.item.FoodItemRepo;
 import org.example.service.CarbonService;
+import org.example.service.FoodService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,47 +21,67 @@ import java.util.UUID;
 public class FoodItemService {
 
     private final FoodItemRepo repository;
-    private final FoodRepo foodRepo;
+    private final FoodService foodService;
     private final UserRepo userRepo;
+    private final CommitteeRepo committeeRepo;
     private final CarbonService carbonService;
 
     // Spring injects the repositories automatically via the constructor
-    public FoodItemService(FoodItemRepo foodItemRepo, FoodRepo foodRepo, UserRepo userRepo, CarbonService carbonService) {
+    public FoodItemService(FoodItemRepo foodItemRepo, FoodService foodService, UserRepo userRepo, CommitteeRepo committeeRepo, CarbonService carbonService) {
         this.repository = foodItemRepo;
-        this.foodRepo = foodRepo;
+        this.foodService = foodService;
         this.userRepo = userRepo;
+        this.committeeRepo = committeeRepo;
         this.carbonService = carbonService;
     }
 
-    public FoodItem createFoodItem(FoodRequest request) {
-        Food food = foodRepo
-                .findByName(request.getFoodName())
-                .orElseThrow(() -> new RuntimeException("Food not found or too many food found: " + request.getFoodName() ));
-
-        User author = userRepo
-                .findByName(request.getAuthorName())
-                .orElseThrow(() -> new RuntimeException("Author for this request not found: " + request.getAuthorName()));
-
-        return new FoodItem(author.getId(),"FOOD", food.getId(), request.getValue());
+    private boolean checkFoodRequest(FoodItem request){
+        return foodService.existsById(request.getObjectId()) && userRepo.existsById(request.getAuthorId()) && committeeRepo.existsById(request.getCommitteeId());
     }
 
     @Transactional
-    public void createAndSaveFoodItem(FoodRequest request) {
-        FoodItem foodItem = createFoodItem(request);
+    public void createAndSaveFoodItem(FoodItem foodItem) {
         repository.save(foodItem);
     }
 
-    public List<FoodRowDTO> getFoodItemList(UUID committeeID){
+    public FoodRowDTO createFoodRowDTO(FoodItem item){
+        Food food = foodService.getFood(item.getObjectId());
+        double co2Value = carbonService.getCarbonValue(food,item.getQuantity());
+        return new FoodRowDTO(item.getId(),food.getId(),food.getName(),item.getCategory(),item.getQuantity(),co2Value);
+    }
+
+    private UUID parseId(String rawId) {
+        return (rawId == null || rawId.isBlank()) ? null : UUID.fromString(rawId);
+    }
+
+    public List<FoodRowDTO> saveFoodItems(List<FoodItemDTO> foodItemDTOS){
+        List<FoodRowDTO> result = new ArrayList<>();
+        for (FoodItemDTO dto : foodItemDTOS){
+            UUID id = parseId(dto.id());
+            FoodItem item = (id != null)
+                    ? repository.findById(id).orElse(new FoodItem(dto))
+                    : new FoodItem(dto);
+            FoodItem savedItem = repository.save(item);
+
+            result.add(createFoodRowDTO(savedItem));
+        }
+        return result;
+    }
+
+    public List<FoodRowDTO> getFoodItemList(FoodItemRequest request){
         // This function is used by the UI to fetch already saved carbon footprint
         // If there is no element in the database yet, it returns an empty list
-        List<FoodItem> foodItems = repository.findByAuthorId(committeeID)
+        UUID committeeId = request.getCommitteeId();
+        System.out.println(committeeId);
+        List<FoodItem> foodItems = repository.findByCommitteeId(committeeId)
                 .orElse(new java.util.ArrayList<>(List.of()));
         List<FoodRowDTO> result = new java.util.ArrayList<>(List.of());
         for(FoodItem f : foodItems){
-            Food temp = foodRepo.findById(f.getObjectId()).orElseThrow(() -> new RuntimeException("Couldn't find any food for this uuid: " + f.getObjectId()));
-            double carbonValue = carbonService.getCarbonValue(temp,f.getQuantity());
-            result.add(new FoodRowDTO(temp.getName(),temp.getFood_group(),f.getQuantity(),carbonValue));
+            Food food = foodService.getFood(f.getObjectId());
+            double carbonValue = carbonService.getCarbonValue(food,f.getQuantity());
+            result.add(new FoodRowDTO(f.getId(),food.getId(),food.getName(),request.getCategory(),f.getQuantity(),carbonValue));
         }
+        System.out.println(result);
         return result;
     }
 }

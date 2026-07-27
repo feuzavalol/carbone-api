@@ -8,10 +8,16 @@ import java.util.UUID;
 @Entity
 public class FoodItem {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Column(name="author_id", nullable = false)
+    @Getter
     private UUID authorId;
+    @Column(name="committee_id", nullable=false)
+    @Getter
+    private UUID committeeId;
+    @Getter
     private String category;
     @Getter
     @Column(name="object_id", nullable = false)
@@ -19,10 +25,21 @@ public class FoodItem {
     @Getter
     private double quantity;
 
-    public FoodItem(UUID authorId, String category, UUID foodId, double quantity) {
+    public FoodItem(UUID authorId, UUID committeeId, UUID objectId, String category, double quantity){
         this.authorId = authorId;
+        this.committeeId = committeeId;
+        this.objectId = objectId;
         this.category = category;
-        this.objectId = foodId;
         this.quantity = quantity;
     }
+
+    public FoodItem(FoodItemDTO dto){
+        this.objectId = UUID.fromString(dto.objectId());
+        this.authorId = UUID.fromString(dto.authorId());
+        this.committeeId = UUID.fromString(dto.committeeId());
+        this.category = dto.category();
+        this.quantity = dto.quantity();
+    }
+
+    public FoodItem(){}
 }
