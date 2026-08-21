@@ -2,4 +2,6 @@ package org.example.model.responses;
 
 import org.example.model.Category;
 
-public record CommitteeDTO(Category category, int number, int year){}
+import java.util.UUID;
+
+public record CommitteeDTO(UUID id, Category category, int number, int year){}
