@@ -1,7 +1,7 @@
 package org.example.service;
 
 import org.example.model.*;
-import org.example.model.requests.LoginRequest;
+import org.example.model.requests.RegisterRequest;
 import org.example.repository.CommitteeRepo;
 import org.example.repository.UserRepo;
 import org.springframework.stereotype.Service;
@@ -40,12 +40,12 @@ public class UserService {
         return new User(name, email, password, role, committee.getId());
     }
 
-    public User createUser(LoginRequest request) {
+    public User createUser(RegisterRequest request) {
         Committee committee = committeeRepository
-                .findByCategoryAndNumberAndYear(request.getCommitteeCategory(), request.getCommitteeNumber(),request.getYear())
-                .orElseThrow(() -> new RuntimeException("Committee not found: " + request.getCommitteeCategory() + " - " + request.getCommitteeNumber()));
+                .findByCategoryAndNumberAndYear(request.committeeCategory(), request.committeeNumber(),request.year())
+                .orElseThrow(() -> new RuntimeException("Committee not found: " + request.committeeCategory() + " - " + request.committeeCategory()));
 
-        return new User(request.getUsername(), request.getEmail(), request.getPassword(), Role.VIS, committee.getId());
+        return new User(request.username(), request.email(), request.password(), Role.VIS, committee.getId());
     }
 
     @Transactional

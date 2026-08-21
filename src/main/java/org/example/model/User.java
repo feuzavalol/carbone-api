@@ -16,6 +16,7 @@ public class User {
     private UUID id;
     @Getter
     private String name;
+    @Getter
     private String email;
     @Column(name="password", nullable = false)
     private String passwordHash;
