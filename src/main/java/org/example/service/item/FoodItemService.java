@@ -61,6 +61,7 @@ public class FoodItemService {
             FoodItem item = (id != null)
                     ? repository.findById(id).orElse(new FoodItem(dto))
                     : new FoodItem(dto);
+            System.out.println(item);
             FoodItem savedItem = repository.save(item);
 
             result.add(createFoodRowDTO(savedItem));
@@ -68,12 +69,29 @@ public class FoodItemService {
         return result;
     }
 
+    public FoodItemDTO removeFoodItem(FoodItemDTO dto){
+        UUID id = parseId(dto.id());
+        if (id != null){
+            if (repository.existsById(id)){
+                repository.deleteById(id);
+                return dto;
+            }
+            else{
+                throw new EntityNotFoundException("The item you wanted to remove doesn't exist");
+            }
+        }
+        else{
+            throw new RuntimeException("The id provided is null");
+        }
+    }
+
     public List<FoodRowDTO> getFoodItemList(FoodItemRequest request){
         // This function is used by the UI to fetch already saved carbon footprint
         // If there is no element in the database yet, it returns an empty list
         UUID committeeId = request.getCommitteeId();
-        System.out.println(committeeId);
-        List<FoodItem> foodItems = repository.findByCommitteeId(committeeId)
+        String category = request.getCategory();
+        // System.out.println(committeeId);
+        List<FoodItem> foodItems = repository.findByCommitteeIdAndCategory(committeeId, category)
                 .orElse(new java.util.ArrayList<>(List.of()));
         List<FoodRowDTO> result = new java.util.ArrayList<>(List.of());
         for(FoodItem f : foodItems){
@@ -81,7 +99,7 @@ public class FoodItemService {
             double carbonValue = carbonService.getCarbonValue(food,f.getQuantity());
             result.add(new FoodRowDTO(f.getId(),food.getId(),food.getName(),request.getCategory(),f.getQuantity(),carbonValue));
         }
-        System.out.println(result);
+        // System.out.println(result);
         return result;
     }
 }

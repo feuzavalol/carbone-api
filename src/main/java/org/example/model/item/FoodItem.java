@@ -41,5 +41,11 @@ public class FoodItem {
         this.quantity = dto.quantity();
     }
 
+    public static FoodItem createFoodItemWithId(FoodItemDTO dto) {
+        FoodItem item = new FoodItem(dto);
+        item.id = UUID.fromString(dto.id());
+        return item;
+    }
+
     public FoodItem(){}
 }

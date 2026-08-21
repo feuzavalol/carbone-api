@@ -8,5 +8,5 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface FoodItemRepo extends JpaRepository<FoodItem, UUID> {
-    Optional<List<FoodItem>> findByCommitteeId(UUID committeeId);
+    Optional<List<FoodItem>> findByCommitteeIdAndCategory(UUID committeeId, String category);
 }
