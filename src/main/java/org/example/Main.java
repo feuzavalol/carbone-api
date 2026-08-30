@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.model.Category;
+import org.example.model.CommitteeCategory;
 import org.example.model.Committee;
 import org.example.repository.CommitteeRepo;
 import org.springframework.boot.ApplicationRunner;
@@ -22,7 +22,7 @@ public class Main {
     @Bean
     public ApplicationRunner run(CommitteeRepo committeeRepo) {
         return args -> {
-            Optional<Committee> committee = committeeRepo.findByCategoryAndNumberAndYear(Category.BDE,1,2025);
+            Optional<Committee> committee = committeeRepo.findByCategoryAndNumberAndYear(CommitteeCategory.BDE,1,2025);
             // userService.createAndSaveUser("Jean", "jean@gmail.com","mdpsolide", Role.LIS, Category.BDS, 1);
         };
     }
