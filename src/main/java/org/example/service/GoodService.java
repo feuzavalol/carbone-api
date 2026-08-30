@@ -1,0 +1,39 @@
+package org.example.service;
+
+import org.example.model.*;
+import org.example.model.responses.CarbonResponse;
+import org.example.repository.*;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class GoodService {
+
+    private final GoodRepo goodRepo;
+    private final CarbonService carbonService;
+
+    public GoodService(GoodRepo goodRepo, CarbonService carbonService) {
+
+        this.goodRepo = goodRepo;
+        this.carbonService = carbonService;
+    }
+
+    public boolean existsById(UUID id){
+        return goodRepo.existsById(id);
+    }
+
+    public List<Good> getGoodList() {return goodRepo.findAll();}
+
+    public Good getGood(UUID goodId) {
+        return goodRepo.findById(goodId)
+                .orElseThrow(() -> new RuntimeException("There is no good matching this uuid: "+goodId));
+    }
+
+    public CarbonResponse getCarbonValue(UUID goodId, double quantity) {
+        Good good = getGood(goodId);
+
+        return new CarbonResponse(carbonService.getCarbonValue(good,quantity));
+    }
+}
