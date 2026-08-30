@@ -14,7 +14,7 @@ public class Committee {
     private UUID id;
     @Getter
     @Enumerated(EnumType.STRING)
-    private Category category;
+    private CommitteeCategory category;
     @Getter
     private int number;
     @Getter

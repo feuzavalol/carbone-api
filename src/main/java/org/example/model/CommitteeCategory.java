@@ -1,6 +1,6 @@
 package org.example.model;
 
-public enum Category {
+public enum CommitteeCategory {
     BDS,
     BDE,
     BDA,
