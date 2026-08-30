@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class UserService {
@@ -22,6 +23,11 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+    public UUID parseId(String rawId) {
+        return (rawId == null || rawId.isBlank()) ? null : UUID.fromString(rawId);
+    }
+
+
     public User.UserDTO toDTO(User user) {
         return new User.UserDTO(user.getName(), user.getRole(), user.isActive());
     }
@@ -32,10 +38,10 @@ public class UserService {
         return usersDTO;
     }
 
-    public User createUser(String name, String email, String password, Role role, Category category, int number, int year) {
+    public User createUser(String name, String email, String password, Role role, CommitteeCategory committeeCategory, int number, int year) {
         Committee committee = committeeRepository
-                .findByCategoryAndNumberAndYear(category, number, year)
-                .orElseThrow(() -> new RuntimeException("Committee not found: " + category + " - " + number));
+                .findByCategoryAndNumberAndYear(committeeCategory, number, year)
+                .orElseThrow(() -> new RuntimeException("Committee not found: " + committeeCategory + " - " + number));
 
         return new User(name, email, password, role, committee.getId());
     }
@@ -49,8 +55,8 @@ public class UserService {
     }
 
     @Transactional
-    public void createAndSaveUser(String name, String email, String password, Role role, Category category, int number, int year) {
-        User user = createUser(name,email,password,role,category,number,year);
+    public void createAndSaveUser(String name, String email, String password, Role role, CommitteeCategory committeeCategory, int number, int year) {
+        User user = createUser(name,email,password,role, committeeCategory,number,year);
         userRepository.save(user);
     }
 

@@ -2,6 +2,7 @@ package org.example.security;
 
 import io.swagger.models.HttpMethod;
 import lombok.RequiredArgsConstructor;
+import org.example.model.Role;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -33,9 +34,9 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
                 .authorizeHttpRequests(auth -> auth
-                        /*.requestMatchers(String.valueOf(HttpMethod.OPTIONS), "/**").permitAll()*/
+                        .requestMatchers (String.valueOf(HttpMethod.OPTIONS), "/**").permitAll()
                         .requestMatchers("/auth/login","/auth/register").permitAll()
-                        .anyRequest().authenticated()
+                        .anyRequest().hasAnyRole(Role.ADM.name(), Role.LIS.name(), Role.BRE.name()) // TODO: Restrict the access to LIS
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
