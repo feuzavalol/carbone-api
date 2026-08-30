@@ -1,3 +1,10 @@
 package org.example.model.responses;
 
-public record TransportRowDTO(String name, double distance, double carbonValue) {}
+import java.util.UUID;
+
+public record TransportRowDTO(
+        UUID id,
+        UUID transportId,
+        String name,
+        double distance,
+        double co2Value) {}
