@@ -41,4 +41,14 @@ public class CommitteeService {
 
         return convertToDTO(committeeList);
     }
+
+    public List<Integer> getYears() {
+        return repo.findAll().stream().map(Committee::getYear).distinct().toList();
+    }
+
+    public List<String> getCategories(int year) {
+        List<Committee> committeeList = repo.findByYear(year)
+                .orElse(new ArrayList<>());
+        return committeeList.stream().map(committee -> committee.getCategory().toString()).distinct().toList();
+    }
 }
