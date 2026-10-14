@@ -16,8 +16,9 @@ public class Committee {
     @Enumerated(EnumType.STRING)
     private CommitteeCategory category;
     @Getter
-    private int number;
+    private Integer number;
     @Getter
+    @Column(name="active_year")
     private int year;
     private boolean active;
     private Date created_at;

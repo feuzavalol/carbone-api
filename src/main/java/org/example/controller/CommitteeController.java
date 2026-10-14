@@ -35,4 +35,18 @@ public class CommitteeController {
         Map<Integer, List<CommitteeDTO>> success = Map.of(year,result);
         return ResponseEntity.ok(success);
     }
+
+    @GetMapping("/years")
+    public ResponseEntity<Map<String,List<Integer>>> findAllYear(){
+        List<Integer> result = service.getYears();
+        return  ResponseEntity.ok(Map.of("success",result));
+    }
+
+    @GetMapping("/categories")
+    public ResponseEntity<Map<String,List<String>>> findAllRoles(
+            @RequestParam int year
+    ){
+        List<String> result = service.getCategories(year);
+        return  ResponseEntity.ok(Map.of("success",result));
+    }
 }

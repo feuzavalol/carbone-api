@@ -19,4 +19,6 @@ public interface CommitteeRepo extends JpaRepository<Committee, UUID> {
     boolean existsById(@Nonnull UUID uuid);
 
     boolean findByCategory(CommitteeCategory category);
+
+    Optional<Committee> findByCategoryAndYear(CommitteeCategory category, int year);
 }

@@ -4,6 +4,13 @@ public enum CommitteeCategory {
     BDS,
     BDE,
     BDA,
-    FORUM,
-    BRE
+    Forum,
+    BRE,
+    WEI,
+    Ski,
+    Surf,
+    Gala,
+    BDA_ASSO,
+    BDE_ASSO,
+    BDS_ASSO
 }

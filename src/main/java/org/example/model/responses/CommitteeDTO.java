@@ -4,4 +4,4 @@ import org.example.model.CommitteeCategory;
 
 import java.util.UUID;
 
-public record CommitteeDTO(UUID id, CommitteeCategory category, int number, int year){}
+public record CommitteeDTO(UUID id, CommitteeCategory category, Integer number, int year){}
