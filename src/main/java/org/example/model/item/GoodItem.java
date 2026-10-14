@@ -2,11 +2,12 @@ package org.example.model.item;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
-public class GoodItem {
+public class GoodItem implements Item {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -21,6 +22,7 @@ public class GoodItem {
     @Getter
     private UUID objectId;
     @Getter
+    @Setter
     private double quantity;
 
     public GoodItem(){}

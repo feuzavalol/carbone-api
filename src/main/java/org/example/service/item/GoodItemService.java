@@ -4,7 +4,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.example.model.*;
 import org.example.model.item.GoodItem;
 import org.example.model.item.GoodItemDTO;
-import org.example.model.requests.GoodItemRequest;
+import org.example.model.requests.good.GoodItemRequest;
 import org.example.model.responses.GoodRowDTO;
 import org.example.repository.*;
 import org.example.repository.item.GoodItemRepo;
@@ -112,5 +112,9 @@ public class GoodItemService {
         }
         // System.out.println(result);
         return result;
+    }
+
+    public List<GoodItem> getGoodItemList(UUID committeeId){
+        return repository.findByCommitteeId(committeeId).orElse(new java.util.ArrayList<>(List.of()));
     }
 }

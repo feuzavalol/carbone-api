@@ -36,4 +36,14 @@ public class GoodService {
 
         return new CarbonResponse(carbonService.getCarbonValue(good,quantity));
     }
+
+    public double getCostPerUnit(UUID objectId) {
+        Good good = getGood(objectId);
+        return good.getCost_per_unit();
+    }
+
+    public String getName(UUID objectId) {
+        Good good = getGood(objectId);
+        return good.getName();
+    }
 }
