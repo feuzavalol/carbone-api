@@ -1,6 +1,6 @@
 package org.example.security;
 
-import io.swagger.models.HttpMethod;
+import org.springframework.http.HttpMethod;
 import lombok.RequiredArgsConstructor;
 import org.example.model.Role;
 import org.springframework.context.annotation.Bean;
@@ -34,8 +34,8 @@ public class SecurityConfig {
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(authEntryPoint))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers (String.valueOf(HttpMethod.OPTIONS), "/**").permitAll()
-                        .requestMatchers("/auth/login","/auth/register").permitAll()
+                        .requestMatchers (HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/auth/login","/auth/register","/auth/test").permitAll()
                         .anyRequest().hasAnyRole(Role.ADM.name(), Role.LIS.name(), Role.BRE.name()) // TODO: Restrict the access to LIS
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -46,10 +46,9 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173"));
+        config.setAllowedOrigins(List.of("https://carbone.mines-nancy.com","http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        // config.setAllowCredentials(true); // only if you actually use cookies/credentials
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", config);
