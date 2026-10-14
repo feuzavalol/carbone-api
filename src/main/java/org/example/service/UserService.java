@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -61,4 +62,8 @@ public class UserService {
     }
 
     public List<User> getUsers(){return userRepository.findAll();}
+
+    public List<String> getRoles() {
+        return Arrays.stream(Role.values()).map(Enum::name).toList();
+    }
 }
