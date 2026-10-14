@@ -15,12 +15,7 @@ public class Place {
     private UUID id;
     @Getter
     private String name;
-    private double lat;
-    private double lng;
+    private String address;
 
     public Place() {}
-
-    public Coord getCoords(){
-        return new Coord(lat,lng);
-    }
 }

@@ -13,5 +13,5 @@ public interface TripRepository extends JpaRepository<Trip, UUID> {
     Optional<Trip> findById(@Nonnull UUID uuid);
     Optional<List<Trip>> findByCommitteeId(UUID committeeId);
 
-    Optional<List<Trip>> findByCommitteeIdAndUsage(UUID committeeId, String usage);
+    Optional<Trip> findByCommitteeIdAndUsageId(UUID committeeId, UUID usageId);
 }

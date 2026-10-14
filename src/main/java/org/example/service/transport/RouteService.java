@@ -1,6 +1,7 @@
 package org.example.service.transport;
 
 import org.example.model.*;
+import org.example.model.transport.Route;
 import org.example.repository.*;
 import org.example.repository.transport.PlaceRepository;
 import org.example.repository.transport.RouteRepository;
@@ -16,4 +17,5 @@ public class RouteService {
         this.repository = repository;
     }
 
+    public List<Route> findAll() {return repository.findAll();}
 }

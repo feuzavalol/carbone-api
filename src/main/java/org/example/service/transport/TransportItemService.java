@@ -86,7 +86,6 @@ public class TransportItemService {
             }
         }
         return result;
-
     }
 
     private TransportItem fetchOrCreateTransportItem(TransportItemDTO dto){

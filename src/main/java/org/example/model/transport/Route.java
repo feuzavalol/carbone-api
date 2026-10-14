@@ -8,6 +8,7 @@ import java.util.UUID;
 @Entity
 public class Route {
     @Id
+    @Getter
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     @Getter
@@ -20,4 +21,15 @@ public class Route {
     private UUID placeId2;
     @Getter
     private double distance;
+
+    @Override
+    public String toString() {
+        return "Route item => {" +
+                "id: "+id+
+                ", name: "+name+
+                ", place1_id: "+placeId1+
+                ", place2_id: "+placeId2+
+                ", distance: "+distance+
+                "}";
+    }
 }

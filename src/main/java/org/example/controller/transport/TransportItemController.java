@@ -1,6 +1,6 @@
 package org.example.controller.transport;
 
-import org.example.model.requests.AddTransportRequest;
+import org.example.model.requests.transport.AddTransportRequest;
 import org.example.model.responses.TransportRowDTO;
 import org.example.repository.UserRepo;
 import org.example.security.AuthenticatedUser;
@@ -53,7 +53,6 @@ public class TransportItemController {
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ) {
         if (checkAuthors(userRepo,request.getItems(), currentUser)) {
-            System.out.println("Started saving transport items");
             List<TransportRowDTO> result = service.saveTransportItems(request.getItems());
 
             Map<String, List<TransportRowDTO>> success = Map.of("saved", result);
