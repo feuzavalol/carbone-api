@@ -2,7 +2,6 @@ package org.example.repository;
 
 import jakarta.annotation.Nonnull;
 import org.example.model.Food;
-import org.springframework.data.domain.Example;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;
@@ -14,5 +13,5 @@ public interface FoodRepo extends JpaRepository<Food, UUID> {
     Optional<Food> findById(@Nonnull UUID uuid);
 
     @Override
-    boolean existsById(UUID uuid);
+    boolean existsById(@Nonnull UUID uuid);
 }

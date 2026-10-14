@@ -36,4 +36,14 @@ public class FoodService {
 
         return new CarbonResponse(carbonService.getCarbonValue(food,quantity));
     }
+
+    public Double getCostPerUnit(UUID foodId) {
+        Food food = getFood(foodId);
+        return food.getCost_per_unit();
+    }
+
+    public String getName(UUID foodId) {
+        Food food = getFood(foodId);
+        return food.getName();
+    }
 }

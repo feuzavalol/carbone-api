@@ -2,11 +2,12 @@ package org.example.model.item;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Entity
-public class FoodItem {
+public class FoodItem implements Item {
     @Id
     @Getter
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -17,19 +18,21 @@ public class FoodItem {
     @Column(name="committee_id", nullable=false)
     @Getter
     private UUID committeeId;
+    @Column(name="category_id", nullable=false)
     @Getter
-    private String category;
+    private UUID categoryId;
     @Getter
     @Column(name="object_id", nullable = false)
     private UUID objectId;
     @Getter
+    @Setter
     private double quantity;
 
-    public FoodItem(UUID authorId, UUID committeeId, UUID objectId, String category, double quantity){
+    public FoodItem(UUID authorId, UUID committeeId, UUID objectId, UUID categoryId, double quantity){
         this.authorId = authorId;
         this.committeeId = committeeId;
         this.objectId = objectId;
-        this.category = category;
+        this.categoryId = categoryId;
         this.quantity = quantity;
     }
 
@@ -37,7 +40,7 @@ public class FoodItem {
         this.objectId = UUID.fromString(dto.objectId());
         this.authorId = UUID.fromString(dto.authorId());
         this.committeeId = UUID.fromString(dto.committeeId());
-        this.category = dto.category();
+        this.categoryId = UUID.fromString(dto.categoryId());
         this.quantity = dto.quantity();
     }
 

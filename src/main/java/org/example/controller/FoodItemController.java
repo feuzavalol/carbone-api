@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import org.example.model.item.FoodItemDTO;
-import org.example.model.requests.AddFoodRequest;
-import org.example.model.requests.FoodItemRequest;
-import org.example.model.requests.RemoveFoodRequest;
+import org.example.model.requests.food.AddFoodRequest;
+import org.example.model.requests.food.FoodItemRequest;
+import org.example.model.requests.food.RemoveFoodRequest;
 import org.example.model.responses.FoodRowDTO;
 import org.example.repository.UserRepo;
 import org.example.security.AuthenticatedUser;
@@ -30,11 +30,11 @@ public class FoodItemController {
     @GetMapping("/foodItem")
     public ResponseEntity<Map<String,List<FoodRowDTO>>> findAllFoodItem(
             @RequestParam UUID committeeId,
-            @RequestParam String category,
+            @RequestParam UUID categoryId,
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ) {
         if (SecurityUtil.checkUser(currentUser,committeeId)){
-            FoodItemRequest request = new FoodItemRequest(committeeId,category);
+            FoodItemRequest request = new FoodItemRequest(committeeId,categoryId);
             List<FoodRowDTO> result = service.getFoodItemList(request);
             Map<String, List<FoodRowDTO>> success = Map.of("success",result);
             return ResponseEntity.ok(success);

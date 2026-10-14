@@ -2,14 +2,16 @@ package org.example.service.item;
 
 import jakarta.persistence.EntityNotFoundException;
 import org.example.model.*;
+import org.example.model.categories.MealType;
 import org.example.model.item.FoodItem;
 import org.example.model.item.FoodItemDTO;
-import org.example.model.requests.FoodItemRequest;
+import org.example.model.requests.food.FoodItemRequest;
 import org.example.model.responses.FoodRowDTO;
 import org.example.repository.*;
 import org.example.repository.item.FoodItemRepo;
 import org.example.service.CarbonService;
 import org.example.service.FoodService;
+import org.example.service.MealTypeService;
 import org.example.service.UserService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +30,17 @@ public class FoodItemService {
     private final UserService userService;
     private final CommitteeRepo committeeRepo;
     private final CarbonService carbonService;
+    private final MealTypeService mealTypeService;
 
     // Spring injects the repositories automatically via the constructor
-    public FoodItemService(FoodItemRepo foodItemRepo, FoodService foodService, UserRepo userRepo, UserService userService, CommitteeRepo committeeRepo, CarbonService carbonService) {
+    public FoodItemService(FoodItemRepo foodItemRepo, FoodService foodService, UserRepo userRepo, UserService userService, CommitteeRepo committeeRepo, CarbonService carbonService, MealTypeService mealTypeService) {
         this.repository = foodItemRepo;
         this.foodService = foodService;
         this.userRepo = userRepo;
         this.userService = userService;
         this.committeeRepo = committeeRepo;
         this.carbonService = carbonService;
+        this.mealTypeService = mealTypeService;
     }
 
     private boolean checkFoodRequest(FoodItem request){
@@ -51,7 +55,7 @@ public class FoodItemService {
     public FoodRowDTO createFoodRowDTO(FoodItem item){
         Food food = foodService.getFood(item.getObjectId());
         double co2Value = carbonService.getCarbonValue(food,item.getQuantity());
-        return new FoodRowDTO(item.getId(),food.getId(),food.getName(),item.getCategory(),item.getQuantity(),co2Value);
+        return new FoodRowDTO(item.getId(),food.getId(),food.getName(),item.getCategoryId(),item.getQuantity(),co2Value);
     }
 
     public List<FoodRowDTO> saveFoodItems(List<FoodItemDTO> foodItemDTOS){
@@ -101,17 +105,36 @@ public class FoodItemService {
         // This function is used by the UI to fetch already saved carbon footprint
         // If there is no element in the database yet, it returns an empty list
         UUID committeeId = request.getCommitteeId();
-        String category = request.getCategory();
+        UUID categoryId = request.getCategoryId();
         // System.out.println(committeeId);
-        List<FoodItem> foodItems = repository.findByCommitteeIdAndCategory(committeeId, category)
+        List<FoodItem> foodItems = repository.findByCommitteeIdAndCategoryId(committeeId, categoryId)
                 .orElse(new java.util.ArrayList<>(List.of()));
         List<FoodRowDTO> result = new java.util.ArrayList<>(List.of());
         for(FoodItem f : foodItems){
             Food food = foodService.getFood(f.getObjectId());
             double carbonValue = carbonService.getCarbonValue(food,f.getQuantity());
-            result.add(new FoodRowDTO(f.getId(),food.getId(),food.getName(),request.getCategory(),f.getQuantity(),carbonValue));
+            result.add(new FoodRowDTO(f.getId(),food.getId(),food.getName(),request.getCategoryId(),f.getQuantity(),carbonValue));
         }
         // System.out.println(result);
+        return result;
+    }
+
+    public List<FoodItem> getFoodItemList(UUID committeeId){
+        // This function is used by the UI to fetch already saved carbon footprint
+        // If there is no element in the database yet, it returns an empty list
+        List<FoodItem> result = repository.findByCommitteeId(committeeId)
+                .orElse(new java.util.ArrayList<>(List.of()));
+        return result;
+    }
+
+    public List<List<FoodItem>> getFoodItemListOrganizedByMealTypeForListe(UUID committeeId){
+        List<MealType> mealTypeList = mealTypeService.findAllListe();
+        List<List<FoodItem>> result = new java.util.ArrayList<>();
+        for (MealType mealType : mealTypeList){
+            List<FoodItem> items = repository.findByCommitteeIdAndCategoryId(committeeId,mealType.getId())
+                    .orElse(new java.util.ArrayList<>(List.of()));
+            result.add(items);
+        }
         return result;
     }
 }

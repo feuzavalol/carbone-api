@@ -28,4 +28,13 @@ public class Food {
     private String sub_food_group;
     @Getter
     private String source;
+
+    public Food(UUID id, String name, double cost_per_unit, String unit) {
+        this.id = id;
+        this.name = name;
+        this.cost_per_unit = cost_per_unit;
+        this.unit = unit;
+    }
+
+    public Food(){}
 }

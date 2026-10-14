@@ -1,4 +1,4 @@
-package org.example.model.requests;
+package org.example.model.requests.food;
 
 import lombok.Getter;
 
@@ -8,10 +8,10 @@ public class FoodItemRequest {
     @Getter
     private UUID committeeId;
     @Getter
-    private String category;
+    private UUID categoryId;
 
-    public FoodItemRequest(UUID committeeId,String category){
+    public FoodItemRequest(UUID committeeId, UUID categoryId){
         this.committeeId = committeeId;
-        this.category = category;
+        this.categoryId = categoryId;
     }
 }

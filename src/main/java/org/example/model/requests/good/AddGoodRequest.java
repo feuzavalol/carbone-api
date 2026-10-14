@@ -1,4 +1,4 @@
-package org.example.model.requests;
+package org.example.model.requests.good;
 
 import lombok.Data;
 import org.example.model.item.GoodItemDTO;
