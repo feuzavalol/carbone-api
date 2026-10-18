@@ -15,7 +15,8 @@ public class Good {
     @Getter
     private String name;
     @Getter
-    private double cost_per_unit;
+    @Column(name="cost_per_unit", nullable = false)
+    private double costPerUnit;
     @Getter
     private String unit;
     @Getter
@@ -25,7 +26,10 @@ public class Good {
     @Getter
     @Enumerated(EnumType.STRING)
     private GoodCategory category;
+    @Getter
     private String details;
+    @Getter
     private String comments;
+    @Getter
     private String source;
 }

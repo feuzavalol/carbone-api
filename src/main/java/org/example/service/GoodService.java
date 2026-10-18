@@ -39,7 +39,7 @@ public class GoodService {
 
     public double getCostPerUnit(UUID objectId) {
         Good good = getGood(objectId);
-        return good.getCost_per_unit();
+        return good.getCostPerUnit();
     }
 
     public String getName(UUID objectId) {

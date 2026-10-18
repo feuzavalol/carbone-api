@@ -20,6 +20,6 @@ public class CarbonService {
     }
 
     public double getCarbonValue(Good good, double quantity){
-        return good.getCost_per_unit()*quantity;
+        return good.getCostPerUnit()*quantity;
     }
 }
