@@ -12,7 +12,7 @@ public class CarbonService {
     }
 
     public double getCarbonValue(Food food, double quantity){
-        return food.getCost_per_unit()*quantity;
+        return food.getCostPerUnit()*quantity;
     }
 
     public double getCarbonValue(Transport transport, double distance){
