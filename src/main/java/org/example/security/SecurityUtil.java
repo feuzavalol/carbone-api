@@ -12,6 +12,10 @@ import java.util.UUID;
 
 public class SecurityUtil {
 
+    public static boolean isUserAdmin(AuthenticatedUser user) {
+        return user.role() == Role.ADM || user.role() == Role.BRE;
+    }
+
     public static boolean checkUser(AuthenticatedUser user, UUID committeeId){
         return user.role() != Role.LIS || committeeId.equals(user.committeeId());
     }
