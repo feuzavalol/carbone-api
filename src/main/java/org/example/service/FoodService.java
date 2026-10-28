@@ -39,11 +39,47 @@ public class FoodService {
 
     public Double getCostPerUnit(UUID foodId) {
         Food food = getFood(foodId);
-        return food.getCost_per_unit();
+        return food.getCostPerUnit();
     }
 
     public String getName(UUID foodId) {
         Food food = getFood(foodId);
         return food.getName();
+    }
+
+    public List<String> getFoodGroups() {
+        return foodRepo.findAll().stream().map(Food::getFoodGroup).distinct().toList();
+    }
+
+    public List<String> getSubFoodGroups() {
+        return foodRepo.findAll().stream().map(Food::getSubFoodGroup).distinct().toList();
+    }
+
+    public Food modifyFood(Food food) {
+        if (existsById(food.getId())) {
+            return foodRepo.save(food);
+        }
+        else {
+            throw new RuntimeException("There is no food matching this uuid: "+food.getId()+"\nHere is the food in question: "+food);
+        }
+    }
+
+    public Food createFood(Food food) {
+        if (food.getId() == null) {
+            return foodRepo.save(food);
+        }
+        else {
+            throw new RuntimeException("This item already exists and shouldn't modify through this way: "+ food);
+        }
+    }
+
+    public Food removeFood(Food food) {
+        if (existsById(food.getId())) {
+            foodRepo.delete(food);
+            return food;
+        }
+        else {
+            throw new RuntimeException("There is no food matching this uuid: "+food.getId()+"\nHere is the food in question: "+food);
+        }
     }
 }

@@ -46,4 +46,22 @@ public class GoodService {
         Good good = getGood(objectId);
         return good.getName();
     }
+
+    public Good modifyGood(Good good) {
+        if (existsById(good.getId())) {
+            return goodRepo.save(good);
+        }
+        else {
+            throw new RuntimeException("There is no good matching this uuid: "+good.getId()+"\nHere is the good in question: "+good.toString());
+        }
+    }
+
+    public Good createGood(Good good) {
+        if (good.getId() == null) {
+            return goodRepo.save(good);
+        }
+        else {
+            throw new RuntimeException("This item already exists and shouldn't modify through this way: "+good.toString());
+        }
+    }
 }

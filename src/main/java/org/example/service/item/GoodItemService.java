@@ -51,7 +51,7 @@ public class GoodItemService {
     public GoodRowDTO createGoodRowDTO(GoodItem item){
         Good good = goodService.getGood(item.getObjectId());
         double co2Value = carbonService.getCarbonValue(good,item.getQuantity());
-        return new GoodRowDTO(item.getId(),good.getId(),good.getName(),item.getQuantity(),good.getExpectedUnit(),co2Value);
+        return new GoodRowDTO(item.getId(),good.getId(),good.getName(),item.getQuantity(),good.getExpectedUnit().toString(),co2Value);
     }
 
     public List<GoodRowDTO> saveGoodItems(List<GoodItemDTO> goodItemDTOS){
@@ -108,7 +108,7 @@ public class GoodItemService {
         for(GoodItem f : goodItems){
             Good good = goodService.getGood(f.getObjectId());
             double carbonValue = carbonService.getCarbonValue(good,f.getQuantity());
-            result.add(new GoodRowDTO(f.getId(),good.getId(),good.getName(),f.getQuantity(),good.getExpectedUnit(),carbonValue));
+            result.add(new GoodRowDTO(f.getId(),good.getId(),good.getName(),f.getQuantity(),good.getExpectedUnit().toString(),carbonValue));
         }
         // System.out.println(result);
         return result;

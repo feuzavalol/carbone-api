@@ -3,7 +3,7 @@ package org.example.controller;
 import org.example.model.item.FoodItemDTO;
 import org.example.model.requests.food.AddFoodRequest;
 import org.example.model.requests.food.FoodItemRequest;
-import org.example.model.requests.food.RemoveFoodRequest;
+import org.example.model.requests.food.RemoveFoodItemRequest;
 import org.example.model.responses.FoodRowDTO;
 import org.example.repository.UserRepo;
 import org.example.security.AuthenticatedUser;
@@ -66,7 +66,7 @@ public class FoodItemController {
 
     @DeleteMapping("/removeFoodItems")
     public ResponseEntity<Map<String,FoodItemDTO>> removeFoodItem(
-            @RequestBody RemoveFoodRequest request,
+            @RequestBody RemoveFoodItemRequest request,
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ){
         // The user is supposed to be identified as a LIS user, through security filter in security config

@@ -1,9 +1,9 @@
 package org.example.controller;
 
 import org.example.model.item.GoodItemDTO;
-import org.example.model.requests.*;
 import org.example.model.requests.good.AddGoodRequest;
 import org.example.model.requests.good.GoodItemRequest;
+import org.example.model.requests.good.RemoveGoodRequest;
 import org.example.model.responses.GoodRowDTO;
 import org.example.repository.UserRepo;
 import org.example.security.AuthenticatedUser;
