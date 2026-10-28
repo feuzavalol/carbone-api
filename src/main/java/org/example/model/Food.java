@@ -1,9 +1,6 @@
 package org.example.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 
 import java.util.UUID;
@@ -17,24 +14,41 @@ public class Food {
     @Getter
     private String name;
     @Getter
-    private double cost_per_unit;
+    private double costPerUnit;
     @Getter
-    private String unit;
+    @Convert(converter = FoodUnitConverter.class)
+    private FoodUnit unit;
     @Getter
     private String details;
     @Getter
-    private String food_group;
+    @Column(name="food_group", nullable = false)
+    private String foodGroup;
     @Getter
-    private String sub_food_group;
+    @Column(name="sub_food_group", nullable = false)
+    private String subFoodGroup;
     @Getter
     private String source;
 
-    public Food(UUID id, String name, double cost_per_unit, String unit) {
+    public Food(UUID id, String name, double costPerUnit, FoodUnit unit) {
         this.id = id;
         this.name = name;
-        this.cost_per_unit = cost_per_unit;
+        this.costPerUnit = costPerUnit;
         this.unit = unit;
     }
 
     public Food(){}
+
+    @Override
+    public String toString() {
+        return "Good item => {" +
+                "id: "+id+
+                ", name: "+name+
+                ", cost_per_unit: "+costPerUnit+
+                ", unit: "+unit+
+                ", foodGroup: "+foodGroup+
+                ", subFoodGroup: "+subFoodGroup+
+                ", details: "+details+
+                ", source: "+source+
+                "}";
+    }
 }
