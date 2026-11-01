@@ -5,5 +5,5 @@ import org.example.model.Food;
 
 @Data
 public class RemoveFoodRequest {
-    private Food food;
+    private Food item;
 }

@@ -5,5 +5,5 @@ import org.example.model.Food;
 
 @Data
 public class ModifyFoodRequest {
-    private Food food;
+    private Food item;
 }
