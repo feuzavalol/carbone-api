@@ -47,4 +47,8 @@ public class SecurityUtil {
         }
         return true;
     }
+
+    public static String message(String verb){
+        return "Erreur : l'auteur de cette requête n'a pas le pouvoir de faire ça\nL'auteur a tenté de " + verb + " un aliment de la base de données";
+    }
 }
