@@ -5,5 +5,5 @@ import org.example.model.Good;
 
 @Data
 public class CreateGoodRequest {
-    private Good good;
+    private Good item;
 }
