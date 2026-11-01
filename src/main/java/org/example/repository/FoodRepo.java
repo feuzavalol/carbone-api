@@ -14,4 +14,6 @@ public interface FoodRepo extends JpaRepository<Food, UUID> {
 
     @Override
     boolean existsById(@Nonnull UUID uuid);
+
+    long removeById(UUID id);
 }

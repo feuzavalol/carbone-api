@@ -4,6 +4,7 @@ import org.example.model.*;
 import org.example.model.responses.CarbonResponse;
 import org.example.repository.*;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.UUID;
@@ -73,13 +74,9 @@ public class FoodService {
         }
     }
 
+    @Transactional
     public Food removeFood(Food food) {
-        if (existsById(food.getId())) {
-            foodRepo.delete(food);
-            return food;
-        }
-        else {
-            throw new RuntimeException("There is no food matching this uuid: "+food.getId()+"\nHere is the food in question: "+food);
-        }
+        foodRepo.removeById(food.getId()); // ignore the count
+        return food;
     }
 }

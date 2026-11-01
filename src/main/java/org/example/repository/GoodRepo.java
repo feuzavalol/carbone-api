@@ -14,4 +14,6 @@ public interface GoodRepo extends JpaRepository<Good, UUID> {
 
     @Override
     boolean existsById(UUID uuid);
+
+    long removeById(UUID id);
 }

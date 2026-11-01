@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.transaction.Transactional;
 import org.example.model.*;
 import org.example.model.responses.CarbonResponse;
 import org.example.repository.*;
@@ -61,7 +62,13 @@ public class GoodService {
             return goodRepo.save(good);
         }
         else {
-            throw new RuntimeException("This item already exists and shouldn't modify through this way: "+good.toString());
+            throw new RuntimeException("This item already exists and shouldn't modify through this way: "+good);
         }
+    }
+
+    @Transactional
+    public Good removeGood(Good good) {
+        goodRepo.removeById(good.getId());
+        return good;
     }
 }

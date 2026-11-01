@@ -3,7 +3,9 @@ package org.example.controller;
 import org.example.model.ExpectedUnit;
 import org.example.model.Good;
 import org.example.model.GoodCategory;
+import org.example.model.requests.good.RemoveGoodItemRequest;
 import org.example.model.requests.good.ModifyGoodRequest;
+import org.example.model.requests.good.RemoveGoodRequest;
 import org.example.model.responses.CarbonResponse;
 import org.example.security.AuthenticatedUser;
 import org.example.security.SecurityUtil;
@@ -14,8 +16,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+import static org.example.security.SecurityUtil.message;
 
 @RestController
 public class GoodController {
@@ -66,14 +69,14 @@ public class GoodController {
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ){
         if (SecurityUtil.isUserAdmin(currentUser)){
-            Good result = service.modifyGood(request.getGood());
+            Good result = service.modifyGood(request.getItem());
             Map<String,Good> success;
             success = Map.of("success",result);
             return ResponseEntity.ok(success);
         }
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("Erreur : Un ou plusieurs auteurs de modifications ont posé problème", new Good()));
+                .body(Map.of(message("modifier"), new Good()));
     }
 
     @PostMapping("/createGood")
@@ -82,14 +85,30 @@ public class GoodController {
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ){
         if (SecurityUtil.isUserAdmin(currentUser)){
-            System.out.println(request.getGood());
-            Good result = service.createGood(request.getGood());
+            System.out.println(request.getItem());
+            Good result = service.createGood(request.getItem());
             Map<String,Good> success;
             success = Map.of("success",result);
             return ResponseEntity.ok(success);
         }
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
-                .body(Map.of("Erreur : Un ou plusieurs auteurs de modifications ont posé problème", new Good()));
+                .body(Map.of(message("créer"), new Good()));
+    }
+
+    @DeleteMapping("/removeGood")
+    public ResponseEntity<Map<String, Good>> removeGood(
+            @RequestBody RemoveGoodRequest request,
+            @AuthenticationPrincipal AuthenticatedUser currentUser
+    ){
+        System.out.println(currentUser.role());
+        if (SecurityUtil.isUserAdmin(currentUser)){
+            Good result = service.removeGood(request.getItem());
+            Map<String,Good> success = Map.of("success",result);
+            return ResponseEntity.ok(success);
+        }
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of(message("retirer"), new Good()));
     }
 }

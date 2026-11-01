@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static org.example.security.SecurityUtil.message;
+
 @CrossOrigin(origins = "http://localhost:5173")
 @RestController
 public class FoodController {
@@ -89,9 +91,7 @@ public class FoodController {
         return ResponseEntity.ok(success);
     }
 
-    private String message(String verb){
-        return "Erreur : l'auteur de cette requête n'a pas le pouvoir de faire ça\nL'auteur a tenté de " + verb + " un aliment de la base de données";
-    }
+
 
     @PostMapping("/modifyFood")
     public ResponseEntity<Map<String,Food>> modifyFood(
@@ -99,7 +99,7 @@ public class FoodController {
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ){
         if (SecurityUtil.isUserAdmin(currentUser)){
-            Food result = service.modifyFood(request.getFood());
+            Food result = service.modifyFood(request.getItem());
             Map<String,Food> success;
             success = Map.of("success",result);
             return ResponseEntity.ok(success);
@@ -115,7 +115,7 @@ public class FoodController {
             @AuthenticationPrincipal AuthenticatedUser currentUser
     ){
         if (SecurityUtil.isUserAdmin(currentUser)){
-            Food result = service.createFood(request.getFood());
+            Food result = service.createFood(request.getItem());
             Map<String,Food> success;
             success = Map.of("success",result);
             return ResponseEntity.ok(success);
@@ -131,7 +131,7 @@ public class FoodController {
     ){
         System.out.println(currentUser.role());
         if (SecurityUtil.isUserAdmin(currentUser)){
-            Food result = service.removeFood(request.getFood());
+            Food result = service.removeFood(request.getItem());
             Map<String,Food> success;
             success = Map.of("success",result);
             return ResponseEntity.ok(success);
