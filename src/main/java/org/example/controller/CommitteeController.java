@@ -27,12 +27,12 @@ public class CommitteeController {
     }
 
     @GetMapping("/committees")
-    public ResponseEntity<Map<Integer,List<CommitteeDTO>>> findAllCommitteeByYear(
+    public ResponseEntity<Map<String,List<CommitteeDTO>>> findAllCommitteeByYear(
             @RequestParam int year
     ){
         List<CommitteeDTO> result = service.getAllCommitteeByYear(year);
 
-        Map<Integer, List<CommitteeDTO>> success = Map.of(year,result);
+        Map<String, List<CommitteeDTO>> success = Map.of("success",result);
         return ResponseEntity.ok(success);
     }
 
@@ -48,5 +48,13 @@ public class CommitteeController {
     ){
         List<String> result = service.getCategories(year);
         return  ResponseEntity.ok(Map.of("success",result));
+    }
+
+    @GetMapping("/isListe")
+    public ResponseEntity<Boolean> isListe(
+            @RequestParam UUID committeeId
+    ){
+        boolean result = service.isListe(committeeId);
+        return ResponseEntity.ok(result);
     }
 }

@@ -51,4 +51,10 @@ public class CommitteeService {
                 .orElse(new ArrayList<>());
         return committeeList.stream().map(committee -> committee.getCategory().toString()).distinct().toList();
     }
+
+    public boolean isListe(UUID id) {
+        Committee committee = repo.findById(id).orElse(null);
+        if (committee == null) {throw new RuntimeException("Committee not found for id:" + id);}
+        return committee.isListe();
+    }
 }

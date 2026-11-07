@@ -22,6 +22,9 @@ public class Committee {
     private int year;
     private boolean active;
     private Date created_at;
+    @Getter
+    @Column(name="is_liste", nullable=false)
+    private boolean isListe;
 
     public boolean getActive() {return active;}
     public Date getCreationDate() {return created_at;}
