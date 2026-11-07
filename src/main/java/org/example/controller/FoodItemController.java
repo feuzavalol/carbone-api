@@ -1,5 +1,6 @@
 package org.example.controller;
 
+import org.example.model.categories.MealType;
 import org.example.model.item.FoodItemDTO;
 import org.example.model.requests.food.AddFoodRequest;
 import org.example.model.requests.food.FoodItemRequest;
@@ -84,5 +85,34 @@ public class FoodItemController {
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("Erreur : Un ou plusieurs auteurs de modifications ont posé problème", new FoodItemDTO("","","","","",0.0)));
+    }
+
+
+    @GetMapping("/foodCategoriesByCommitteeId")
+    public ResponseEntity<List<MealType>> findAllFoodCategoriesByCommitteeId(
+            @RequestParam UUID committeeId,
+            @AuthenticationPrincipal AuthenticatedUser currentUser
+    ){
+        if (SecurityUtil.checkUser(currentUser, committeeId)){
+            return ResponseEntity.ok(service.getAllMealTypeByCommitteeId(committeeId));
+        }
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(List.of());
+//                .body(Map.of("Erreur : Ces données ne sont pas accessibles pour cet utilisateur", ));
+
+    }
+
+    @GetMapping("/nextAvailableMeal")
+    public ResponseEntity<MealType> findNextAvailableMeal(
+            @RequestParam UUID committeeId,
+            @AuthenticationPrincipal AuthenticatedUser currentUser
+    ){
+        if (SecurityUtil.checkUser(currentUser, committeeId)){
+            return ResponseEntity.ok(service.getNextAvailableMeal(committeeId));
+        }
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED)
+                .body(new MealType());
     }
 }

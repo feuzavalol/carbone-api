@@ -50,6 +50,13 @@ public class FoodController {
         return ResponseEntity.ok(response);
     }
 
+    @GetMapping("/foodCategory")
+    public ResponseEntity<MealType> findFoodCategory(
+            @RequestParam UUID id
+    ){
+        return ResponseEntity.ok(mealTypeService.findById(id));
+    }
+
     @GetMapping("/foodCategories")
     public ResponseEntity<List<MealType>> findAllFoodCategories(){
         return ResponseEntity.ok(mealTypeService.findAll());
@@ -58,13 +65,6 @@ public class FoodController {
     @GetMapping("/listeFoodCategories")
     public ResponseEntity<List<MealType>> findAllFoodCategoriesForListe(){
         return ResponseEntity.ok(mealTypeService.findAllListe());
-    }
-
-    @GetMapping("/foodCategory")
-    public ResponseEntity<MealType> findFoodCategory(
-            @RequestParam UUID id
-    ){
-        return ResponseEntity.ok(mealTypeService.findById(id));
     }
 
     @GetMapping("/foodGroup")

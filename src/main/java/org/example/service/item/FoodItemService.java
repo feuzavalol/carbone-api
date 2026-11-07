@@ -137,4 +137,34 @@ public class FoodItemService {
         }
         return result;
     }
+
+    public List<MealType> getAllMealTypeByCommitteeId(UUID committeeId) {
+        Committee committee = committeeRepo.findById(committeeId).orElse(null);
+        if (committee == null){return new ArrayList<>();}
+        if (committee.isListe()) {
+            return mealTypeService.findAllListe();
+        } else {
+            List<FoodItem> foodItems = repository.findByCommitteeId(committeeId).orElse(new ArrayList<>());
+            List<UUID> mealTypeUUIDs = foodItems.stream().map(FoodItem::getCategoryId).toList();
+            return mealTypeService.findById(mealTypeUUIDs).stream().distinct().toList();
+        }
+    }
+
+
+
+    public MealType getNextAvailableMeal(UUID committeeId) {
+        Committee committee = committeeRepo.findById(committeeId).orElse(null);
+        if (committee == null){
+            throw new RuntimeException("Committee id not found");
+        }
+        if (committee.isListe()) {
+            return new MealType();
+        } else {
+            List<MealType> mealTypes = mealTypeService.findAllNonListe();
+            List<FoodItem> foodItems = repository.findByCommitteeId(committeeId).orElse(new ArrayList<>());
+            List<MealType> committeeMealTypes = foodItems.stream().map(FoodItem::getCategoryId).map(mealTypeService::findById).toList();
+            List<MealType> availableMealTypes = mealTypes.stream().filter((mealType) -> !committeeMealTypes.contains(mealType)).toList();
+            return mealTypeService.getFirstMeal(availableMealTypes);
+        }
+    }
 }

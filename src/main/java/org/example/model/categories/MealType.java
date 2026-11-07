@@ -19,4 +19,19 @@ public class MealType {
     public boolean getIsListe() {
         return isListe;
     }
+
+    public boolean getIsNonListe(){
+        return !isListe;
+    }
+
+    public MealType (){}
+
+    public boolean lowerThan(MealType otherMealType) {
+        return Integer.parseInt(this.name.substring(9)) <= Integer.parseInt(otherMealType.name.substring(9));
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
+    }
 }
