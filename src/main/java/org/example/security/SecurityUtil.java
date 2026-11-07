@@ -16,12 +16,17 @@ public class SecurityUtil {
         return user.role() == Role.ADM || user.role() == Role.BRE;
     }
 
+    public static boolean isUserAdmin(User user) {
+        return user.getRole() == Role.ADM || user.getRole() == Role.BRE;
+    }
+
+
     public static boolean checkUser(AuthenticatedUser user, UUID committeeId){
-        return user.role() != Role.LIS || committeeId.equals(user.committeeId());
+        return isUserAdmin(user) || committeeId.equals(user.committeeId());
     }
 
     public static boolean checkUser(User user, UUID committeeId){
-        return user.getRole() != Role.LIS || committeeId.equals(user.getCommittee_id());
+        return isUserAdmin(user) || committeeId.equals(user.getCommittee_id());
     }
 
     public static boolean checkAuthor(UserRepo userRepo, ItemDTO request, AuthenticatedUser currentUser){
