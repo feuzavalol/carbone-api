@@ -92,7 +92,7 @@ public class SummaryService {
         List<String> colors = ColorTools.staticRandomColors(carbonValues.size());
         datasets.add(new Dataset(mainLabel,carbonValues,colors));
 
-        return new SummaryDTO(mealTypeService.getLabelForMealListe(),datasets);
+        return new SummaryDTO(mealTypeService.getNameForMealListe(),datasets);
     }
 
 //    public SummaryDTO getTransportSummary(UUID committeeId) {
